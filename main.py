@@ -7,10 +7,10 @@ import pyjokes
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
-SLACK_APP_TOKEN = os.environ["SLACK_APP_TOKEN"]
-SLACK_BOT_TOKEN = os.environ["SLACK_BOT_TOKEN"]
+PRVRBOT_APP_TOKEN = os.environ["PRVRBOT_APP_TOKEN"]
+PRVRBOT_BOT_TOKEN = os.environ["PRVRBOT_BOT_TOKEN"]
 
-app = App(token=SLACK_BOT_TOKEN, name="PRVRbot")
+app = App(token=PRVRBOT_BOT_TOKEN, name="PRVRbot")
 logger = logging.getLogger(__name__)
 
 
@@ -66,20 +66,8 @@ def update_home_tab(client, event, logger):
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "want to hear a joke?"
+                            "text": "Want to hear a joke? Send me a message saying \"joke\"'
                         }
-                    },
-                    {
-                        "type": "actions",
-                        "elements": [
-                            {
-                                "type": "button",
-                                "text": {
-                                    "type": "plain_text",
-                                    "text": "Get Joke!"
-                                }
-                            }
-                        ]
                     }
                 ]
             }
@@ -90,7 +78,7 @@ def update_home_tab(client, event, logger):
 
 
 def main():
-    handler = SocketModeHandler(app, SLACK_APP_TOKEN)
+    handler = SocketModeHandler(app, PRVRBOT_APP_TOKEN)
     handler.start()
 
 
