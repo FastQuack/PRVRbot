@@ -4,7 +4,7 @@ PRVRbot - Slackbot that does some helpful things for PRVR
 docker run -d \
   --name=prvrbot \
   -e SLACK_APP_TOKEN= `APP_TOKEN` \
-  -e SLACK_BOT_TOKEN=cloudflare `BOT_TOKEN` \
+  -e SLACK_BOT_TOKEN= `BOT_TOKEN` \
   --restart unless-stopped \
   Docker.io/PRVRbot
 ```
@@ -27,8 +27,3 @@ git clone https://github.com/FastQuack/PRVRbot.git
 cd PRVRbot-main
 docker build -t prvrbot:latest .
 ```
-
-## Versions
-
-* **04.02.22:** - Removed unused files.
-* **04.02.22:** - Initial release.
