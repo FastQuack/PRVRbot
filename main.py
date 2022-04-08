@@ -1,5 +1,6 @@
 import logging
 import os
+import random
 import re
 
 import pyjokes
@@ -14,7 +15,8 @@ app = App(token=SLACK_BOT_TOKEN, name="PRVRbot")
 logger = logging.getLogger(__name__)
 
 
-@app.message(re.compile("^joke$"))  # type: ignore
+# When a user says joke, send a joke
+@app.message(re.compile("^[jJ]oke$"))  # type: ignore
 def show_random_joke(message, say):
     channel_type = message["channel_type"]
     if channel_type != "im":
@@ -27,6 +29,22 @@ def show_random_joke(message, say):
     logger.info(f"Sent joke < {joke} > to user {user_id}")
 
     say(text=joke, channel=dm_channel)
+
+
+# When a user says Hi in a DM, say Hi back
+@app.message(re.compile("^([Hh]i)|([Hh]ello)|([Hh]owdy)|(:wave:)"))
+def greet(message, say):
+    channel_type = message["channel_type"]
+    if channel_type != "im":
+        return
+
+    dm_channel = message["channel"]
+    user_id = message["user"]
+
+    greetings = ["Hi!", "Hello.", "Howdy!", ":wave:"]
+    logger.info(f"Greeted user {user_id}")
+
+    say(text=random.choice(greetings), channel=dm_channel)
 
 
 # When a user joins the workspace, send a message in #general asking them to introduce themselves
