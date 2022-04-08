@@ -3,7 +3,7 @@ FROM python:3.10.3-slim-buster
 RUN pip install --upgrade pip
 
 # Create user
-RUN adduser -D prvrbot
+RUN adduser --disabled-login prvrbot
 USER prvrbot
 WORKDIR /home/prvrbot
 
@@ -15,4 +15,4 @@ ENV PATH="/home/prvrbot/.local/bin:${PATH}"
 
 COPY --chown=prvrbot:prvrbot . .
 
-CMD ["python", "main.py"]
+CMD ["python3", "main.py"]

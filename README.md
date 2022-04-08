@@ -24,6 +24,12 @@ If you want to make local modifications to these images for development purposes
 
 ```bash
 git clone https://github.com/FastQuack/PRVRbot.git
-cd PRVRbot-main
+cd PRVRbot
 docker build -t prvrbot:latest .
+docker run -dit \
+  --name=prvrbot \
+  -e SLACK_APP_TOKEN='APP_TOKEN' \
+  -e SLACK_BOT_TOKEN='BOT_TOKEN' \
+  --restart unless-stopped \
+  prvrbot
 ```
