@@ -48,7 +48,7 @@ def greet(message, say):
 
 
 # When a user joins the workspace, send a message in #general asking them to introduce themselves
-@app.event("team-join")
+@app.event("team_join")
 def ask_for_introduction(event, say):
     welcome_channel_id = "C31PR67DX"  # general
     user_id = event["user"]
