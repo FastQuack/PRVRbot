@@ -358,9 +358,8 @@ async def breezeway_shortcut(ack, body, client):
 
 
 @slack.options("unit")
-async def handle_some_options(ack):
-
-    units = await breezeway.get_units_sorted()
+async def handle_some_options(body, ack):
+    units = await breezeway.get_units_sorted(body["value"])
 
     unit_options = []
     for unit in units:
@@ -374,7 +373,12 @@ async def handle_some_options(ack):
         }
         unit_options.append(option)
 
-    await ack(options=[])
+    await ack(options=unit_options)
+
+
+@slack.action("unit")
+async def handle_some_action(ack,):
+    await ack()
 
 
 @slack.action("department")
