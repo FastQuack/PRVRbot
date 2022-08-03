@@ -193,32 +193,15 @@ async def breezeway_shortcut(ack, body, client):
     unit_department_block = {
         "type": "actions",
         "elements": [
-            # {
-            #     "type": "static_select",
-            #     "placeholder": {
-            #         "type": "plain_text",
-            #         "text": "Select Property",
-            #         "emoji": False
-            #     },
-            #     "options": unit_options,
-            #     "action_id": "unit"
-            # },
             {
-                "type": "section",
-                "block_id": "section678",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": "Pick an item from the dropdown list"
+                "action_id": "unit",
+                "type": "external_select",
+                "placeholder": {
+                    "type": "plain_text",
+                    "text": "Select Property"
                 },
-                "accessory": {
-                    "action_id": "text1234",
-                    "type": "external_select",
-                    "placeholder": {
-                        "type": "plain_text",
-                        "text": "Select an item"
-                    },
-                    "min_query_length": 3
-                }
+                "min_query_length": 3
+
             },
             {
                 "type": "static_select",
@@ -387,9 +370,9 @@ async def breezeway_shortcut(ack, body, client):
     await task_ack
 
 
-@slack.action("unit")
-async def handle_action(ack):
-    await ack()
+@slack.options("unit")
+async def handle_some_options(ack):
+    await ack(options=[])
 
 
 @slack.action("department")
