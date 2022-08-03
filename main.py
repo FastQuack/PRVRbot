@@ -157,7 +157,7 @@ async def ask_for_introduction(event, say):
 
 
 @slack.shortcut("create_breezeway_task")
-async def create_breezeway_task(ack, body, client):
+async def breezeway_shortcut(ack, body, client):
     task_ack = asyncio.create_task(ack())
     if config["breezeway"]["enabled"] is False:
         await task_ack
@@ -203,6 +203,23 @@ async def create_breezeway_task(ack, body, client):
             #     "options": unit_options,
             #     "action_id": "unit"
             # },
+            {
+                "type": "section",
+                "block_id": "section678",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "Pick an item from the dropdown list"
+                },
+                "accessory": {
+                    "action_id": "text1234",
+                    "type": "external_select",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": "Select an item"
+                    },
+                    "min_query_length": 3
+                }
+            },
             {
                 "type": "static_select",
                 "placeholder": {
