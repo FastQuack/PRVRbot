@@ -23,6 +23,9 @@ def get_file(filename):
 
 
 def get_config(filename):
+    if not os.path.exists(filename):
+        logger.fatal(f"Could not load {filename}. Does not exist")
+        raise Exception(f"Could not load {filename}. Does not exist")
     with open(get_file(filename), "r") as f:
         return yaml.safe_load(f)
 
