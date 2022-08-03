@@ -13,6 +13,6 @@ RUN pip install --user -r requirements.txt
 
 ENV PATH="/home/prvrbot/.local/bin:${PATH}"
 
-COPY --chown=prvrbot:prvrbot . .
+COPY --chown=prvrbot:prvrbot ../../Desktop .
 
 CMD ["python3", "main.py"]
