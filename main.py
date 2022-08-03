@@ -169,8 +169,7 @@ async def breezeway_shortcut(ack, body, client):
         "react-to": body["message"]["ts"]
     }
 
-    units = await breezeway.get_units()
-    units = sorted(units, key=lambda k: k["name"])
+    units = await breezeway.get_units_sorted()
 
     result = {"ratio": 0}
     for unit in units:
@@ -293,8 +292,7 @@ async def breezeway_shortcut(ack, body, client):
         }
     }
 
-    people = await breezeway.get_people()
-    people = sorted(people, key=lambda k: k['first_name'])
+    people = await breezeway.get_people_sorted()
     people_options = []
 
     for person in people:
@@ -388,8 +386,7 @@ async def update_view(ack, body, client):
 
     blocks = body["view"]["blocks"]
 
-    people = await breezeway.get_people()
-    people = sorted(people, key=lambda k: k['first_name'])
+    people = await breezeway.get_people_sorted()
     people_options = []
 
     for person in people:
@@ -488,17 +485,17 @@ async def breezeway_task_submission(ack, body, client):  # TODO: <- use "client"
                 "action_id": "none"
             }
         }]
-        await slack.client.chat_postMessage(token=config["slack"]["bot-token"], text=f"Project made\n{project['name']}",
-                                            channel=metadata["channel"], thread_ts=metadata["reply-to"], blocks=blocks,
-                                            icon_emoji=":breezeway:")
-        await slack.client.reactions_add(token=config["slack"]["bot-token"], channel=metadata["channel"],
-                                         timestamp=metadata["react-to"], name="breezeway")
+
+        await client.chat_postMessage(text=f"Project made\n{project['name']}", channel=metadata["channel"],
+                                      thread_ts=metadata["reply-to"], blocks=blocks, icon_emoji=":breezeway:")
+        await client.reactions_add(channel=metadata["channel"], timestamp=metadata["react-to"], name="breezeway")
         # TODO add delete project button?
 
     else:
         await ack()
-        await slack.client.chat_postEphemeral(token=config["slack"]["bot-token"], text=f"Something went wrong. Please try "
-                                              "again or make build project in breezeway", channel=metadata["channel"],
+        await slack.client.chat_postEphemeral(token=config["slack"]["bot-token"],
+                                              text=f"Something went wrong. Please try again or make build project in "
+                                                   f"breezeway", channel=metadata["channel"],
                                               thread_ts=metadata["reply-to"], user=body["user"]["id"])
 
 
