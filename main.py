@@ -30,7 +30,7 @@ def get_config(filename):
         return yaml.safe_load(f)
 
 
-config = get_config("config.yml")
+config = get_config("config/config.yml")
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
