@@ -3,8 +3,7 @@ PRVRbot - Slackbot that does some helpful things for PRVR
 ```bash
 docker run -d \
   --name=prvrbot \
-  -e SLACK_APP_TOKEN= `APP_TOKEN` \
-  -e SLACK_BOT_TOKEN= `BOT_TOKEN` \
+  -v /path/to/data:/config \
   --restart unless-stopped \
   Docker.io/PRVRbot
 ```
