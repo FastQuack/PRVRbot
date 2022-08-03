@@ -171,18 +171,7 @@ async def breezeway_shortcut(ack, body, client):
 
     units = await breezeway.get_units()
     units = sorted(units, key=lambda k: k["name"])
-    unit_options = []
-    for unit in units:
-        ...
-        # option = {
-        #     "text": {
-        #         "type": "plain_text",
-        #         "text": unit["name"],
-        #         "emoji": True
-        #     },
-        #     "value": str(unit['id'])
-        # }
-        # unit_options.append(option)
+
     result = {"ratio": 0}
     for unit in units:
         weight = len(unit["name"]) * 0.007 + 1
@@ -372,6 +361,21 @@ async def breezeway_shortcut(ack, body, client):
 
 @slack.options("unit")
 async def handle_some_options(ack):
+
+    units = await breezeway.get_units_sorted()
+
+    unit_options = []
+    for unit in units:
+        option = {
+            "text": {
+                "type": "plain_text",
+                "text": unit["name"],
+                "emoji": True
+            },
+            "value": str(unit['id'])
+        }
+        unit_options.append(option)
+
     await ack(options=[])
 
 
@@ -444,7 +448,7 @@ async def update_view(ack, body, client):
 
 
 @slack.view("breezeway_task")
-async def breezeway_task_submission(ack, body, client):
+async def breezeway_task_submission(ack, body, client):  # TODO: <- use "client"
     # TODO dont allow projects in past
     # TODO enforce property
     logger.info(f"Received view submission from {body['user']['username']}")
@@ -493,7 +497,7 @@ async def breezeway_task_submission(ack, body, client):
 
     else:
         await ack()
-        await slack.client.chat_postEphemeral(config["slack"]["bot-token"], text=f"Something went wrong. Please try "
+        await slack.client.chat_postEphemeral(token=config["slack"]["bot-token"], text=f"Something went wrong. Please try "
                                               "again or make build project in breezeway", channel=metadata["channel"],
                                               thread_ts=metadata["reply-to"], user=body["user"]["id"])
 
