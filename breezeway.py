@@ -114,6 +114,10 @@ class AsyncApp:
         else:
             logging.error(f"Failed to get people, received data:\n {body}")
 
+    async def get_people_sorted(self):
+        people = await self.get_people()
+        return sorted(people, key=lambda k: k["first_name"])
+
     async def create_project(
             self, unit_id: int | str, department: str, priority: str = "normal", title: str = None,
             description: Optional[str] = None, template_id: Optional[int] = None, due_date: Optional[str] = None,
