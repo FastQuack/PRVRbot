@@ -1,6 +1,7 @@
 from typing import Optional, List
 import json
 import logging
+import re
 import aiohttp
 
 
@@ -65,7 +66,7 @@ class AsyncApp:
         else:
             logging.error(f"Failed to get companies, received data:\n {body}")
 
-    async def get_units(self):
+    async def get_units(self, regex_filter=None):
         logging.info("Getting properties")
         url = f"https://{self.__url}/public/inventory/v1/property/external-id?reference_company_id={self.company_id}"
 
@@ -78,13 +79,20 @@ class AsyncApp:
                 body = await response.json()
 
         if response.status == 200:
+            if regex_filter:
+                regex_filter = regex_filter.lower()
+                units = list(body)
+                body = []
+                for unit in units:
+                    if re.search(regex_filter, unit["name"].lower()):
+                        body.append(unit)
             logging.debug(f"Successfully got properties. received data:\n {body}")
             return body
         else:
             logging.error(f"Failed to get properties, received data:\n {body}")
 
-    async def get_units_sorted(self):
-        units = await self.get_units()
+    async def get_units_sorted(self, regex_filter=None):
+        units = await self.get_units(regex_filter)
         return sorted(units, key=lambda k: k["name"])
 
     async def get_people(self):
