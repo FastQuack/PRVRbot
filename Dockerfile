@@ -9,10 +9,10 @@ WORKDIR /home/prvrbot
 
 # Install dependencies
 COPY --chown=prvrbot:prvrbot requirements.txt requirements.txt
-RUN pip install --user -r requirements.txt
+RUN pip install --user -r requirements.txt --no-warn-script-location
 
 ENV PATH="/home/prvrbot/.local/bin:${PATH}"
 
-COPY --chown=prvrbot:prvrbot ../../Desktop .
+COPY --chown=prvrbot:prvrbot . .
 
 CMD ["python3", "main.py"]

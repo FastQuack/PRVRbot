@@ -22,16 +22,6 @@ def get_file(filename):
     return os.path.join(folder, filename)
 
 
-def get_config(filename):
-    if not os.path.exists(filename):
-        logger.fatal(f"Could not load {filename}. Does not exist")
-        raise Exception(f"Could not load {filename}. Does not exist")
-    with open(get_file(filename), "r") as f:
-        return yaml.safe_load(f)
-
-
-config = get_config("config/config.yml")
-
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('[%(asctime)s][%(levelname)s][%(filename)s]: %(message)s',
@@ -45,6 +35,18 @@ fh = logging.FileHandler(get_file("prvrbot.log"))
 fh.setLevel(logging.INFO)
 fh.setFormatter(formatter)
 logger.addHandler(fh)
+
+
+def get_config(filename):
+    if not os.path.exists(filename):
+        logger.fatal(f"Could not load {filename}. Does not exist")
+        raise Exception(f"Could not load {filename}. Does not exist")
+    with open(get_file(filename), "r") as f:
+        return yaml.safe_load(f)
+
+
+config = get_config("config/config.yml")
+
 
 slack = Slack(token=config["slack"]["bot-token"], name="PRVRbot")
 breezeway = Breezeway(
@@ -171,15 +173,16 @@ async def create_breezeway_task(ack, body, client):
     units = sorted(units, key=lambda k: k["name"])
     unit_options = []
     for unit in units:
-        option = {
-            "text": {
-                "type": "plain_text",
-                "text": unit["name"],
-                "emoji": True
-            },
-            "value": str(unit['id'])
-        }
-        unit_options.append(option)
+        ...
+        # option = {
+        #     "text": {
+        #         "type": "plain_text",
+        #         "text": unit["name"],
+        #         "emoji": True
+        #     },
+        #     "value": str(unit['id'])
+        # }
+        # unit_options.append(option)
     result = {"ratio": 0}
     for unit in units:
         weight = len(unit["name"]) * 0.007 + 1
@@ -190,16 +193,16 @@ async def create_breezeway_task(ack, body, client):
     unit_department_block = {
         "type": "actions",
         "elements": [
-            {
-                "type": "static_select",
-                "placeholder": {
-                    "type": "plain_text",
-                    "text": "Select Property",
-                    "emoji": False
-                },
-                "options": unit_options,
-                "action_id": "unit"
-            },
+            # {
+            #     "type": "static_select",
+            #     "placeholder": {
+            #         "type": "plain_text",
+            #         "text": "Select Property",
+            #         "emoji": False
+            #     },
+            #     "options": unit_options,
+            #     "action_id": "unit"
+            # },
             {
                 "type": "static_select",
                 "placeholder": {

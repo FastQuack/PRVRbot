@@ -13,7 +13,6 @@ class AsyncApp:
         self.__url = url
         self.__access_token = None
         self.__refresh_token = None
-        self.authenticate()
         self.company_id = company_id or self.get_companies()[0]["id"]
 
     def get_url(self):
