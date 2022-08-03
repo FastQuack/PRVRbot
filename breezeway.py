@@ -83,6 +83,10 @@ class AsyncApp:
         else:
             logging.error(f"Failed to get properties, received data:\n {body}")
 
+    async def get_units_sorted(self):
+        units = await self.get_units()
+        return sorted(units, key=lambda k: k["name"])
+
     async def get_people(self):
         logging.info("Getting people")
         url = f"https://{self.__url}/public/inventory/v1/people?status=active"
